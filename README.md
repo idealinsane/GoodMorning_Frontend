@@ -1,16 +1,31 @@
-# good_morning
+# ☀️굿모닝 프로젝트
 
-A new Flutter project.
+굿모닝 프로젝트를 위한 환경 구성 가이드입니다.
 
-## Getting Started
+## 🚀 시작하기
 
-This project is a starting point for a Flutter application.
+아래 순서를 따라 프로젝트 환경을 구성하세요.
 
-A few resources to get you started if this is your first Flutter project:
+### 1️⃣ 프로젝트 클론하기
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+git clone https://github.com/idealinsane/GoodMorning.git
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 2️⃣ Firebase 설정하기
+
+#### 2-1. Firebase 로그인
+
+터미널에서 다음 명령어를 실행하여 Firebase에 로그인합니다.
+
+```bash
+firebase login
+```
+
+#### 2-2. FlutterFire 구성하기
+
+다음 명령어를 실행하여 Flutter 프로젝트에 Firebase를 구성합니다.
+
+```bash
+flutterfire configure --project=goodmorning-e2072
+```

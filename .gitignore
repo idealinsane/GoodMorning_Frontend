@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase related 
+# 프로젝트 루트폴더에서 아래 명령어 실행
+# flutterfire configure --project=goodmorning-e2072
+
+/lib/firebase_options.dart
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
