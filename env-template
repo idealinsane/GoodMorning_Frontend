@@ -1,0 +1,2 @@
+# flutterfire configure --project=goodmorning-e2072 명령어 실행 후, ios/Runner/GoogleService-Info.plist 내 REVERSED_CLIENT_ID 키 값
+REVERSED_CLIENT_ID=
