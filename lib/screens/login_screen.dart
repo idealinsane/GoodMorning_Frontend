@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:good_morning/layout/default_layout.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class LogInPage extends StatelessWidget {
-  const LogInPage({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -27,21 +28,23 @@ class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      child: Column(
-        children: [
-          Text('Good Morning'),
-          // ElevatedButton(
-          //   onPressed: signInWithGoogle,
-          //   child: Text('Google Sign In'),
-          // ),
-          InkWell(
-            onTap: () async {
-              UserCredential userCredential = await signInWithGoogle();
-              print(userCredential.user?.email);
-            },
-            child: Image.asset('assets/images/google_login.png', width: 200),
-          ),
-        ],
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Good Morning'),
+
+            InkWell(
+              onTap: () async {
+                UserCredential userCredential = await signInWithGoogle();
+                print(userCredential.user);
+                context.go('/good_morning');
+              },
+              child: Image.asset('assets/images/google_login.png', width: 300),
+            ),
+          ],
+        ),
       ),
     );
   }
