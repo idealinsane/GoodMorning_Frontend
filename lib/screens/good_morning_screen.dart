@@ -15,8 +15,9 @@ class _GoodMorningScreenState extends State<GoodMorningScreen> {
 
   @override
   initState() {
+    super.initState();
     _controller = FlutterEarthGlobeController(
-      rotationSpeed: 0.05,
+      rotationSpeed: 0.25,
       isBackgroundFollowingSphereRotation: true,
       surface: Image.asset('assets/images/2k_earth-day.jpg').image,
       background: Image.asset('assets/images/2k_stars.jpg').image,
@@ -30,9 +31,9 @@ class _GoodMorningScreenState extends State<GoodMorningScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: Text('Good Morning')),
+          Text('Good Morning'),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.9,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: FlutterEarthGlobe(controller: _controller, radius: 90),
           ),
         ],

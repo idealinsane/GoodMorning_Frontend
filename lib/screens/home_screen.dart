@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:good_morning/layout/default_layout.dart';
+
+import 'package:good_morning/layout/navigation_layout.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.child});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      child: Center(child: Text(GoRouterState.of(context).uri.toString())),
-    );
+    return NavigationLayout(child: child);
   }
 }

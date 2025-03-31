@@ -27,6 +27,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      context.go('/good_morning');
+    }
     return DefaultLayout(
       child: Center(
         child: Column(
