@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:good_morning/screens/edit_profile_screen.dart';
 import 'package:good_morning/screens/error_screen.dart';
 import 'package:good_morning/screens/good_morning_screen.dart';
 import 'package:good_morning/screens/history_screen.dart';
@@ -9,9 +10,11 @@ import 'package:good_morning/screens/profile_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/good_morning',
-  redirect: (context, state) {
+  redirect: (context, state) async {
     if (FirebaseAuth.instance.currentUser != null) {
-      print(FirebaseAuth.instance.currentUser);
+      User? user = FirebaseAuth.instance.currentUser;
+      String? idToken = await user?.getIdToken();
+      print(idToken);
       return null; // 라우팅 경로로 이동
     }
     return '/login';
@@ -20,7 +23,7 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return HomeScreen(child: GoodMorningScreen());
+        return GoodMorningScreen();
       },
       routes: [
         ShellRoute(
@@ -45,6 +48,14 @@ final router = GoRouter(
               builder: (context, state) {
                 return ProfileScreen();
               },
+              routes: [
+                GoRoute(
+                  path: 'edit',
+                  builder: (context, state) {
+                    return EditProfileScreen();
+                  },
+                ),
+              ],
             ),
           ],
         ),
