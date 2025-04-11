@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:good_morning/route/router.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(), // 여기에 기존 앱 루트 위젯 넣기
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
