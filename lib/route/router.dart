@@ -13,67 +13,59 @@ final router = GoRouter(
   initialLocation: '/good_morning',
   redirect: (context, state) async {
     if (FirebaseAuth.instance.currentUser != null) {
-      // User? user = FirebaseAuth.instance.currentUser;
-      // String? idToken = await user?.getIdToken();
-      // print(idToken);
+      User? user = FirebaseAuth.instance.currentUser;
+      String? idToken = await user?.getIdToken(true);
+      print(idToken);
       return null; // 라우팅 경로로 이동
     }
     return '/login';
   },
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) {
-        return HomeScreen(child: GoodMorningScreen());
+    ShellRoute(
+      builder: (context, state, child) {
+        return HomeScreen(child: child);
       },
       routes: [
-        ShellRoute(
-          builder: (context, state, child) {
-            return HomeScreen(child: child);
+        GoRoute(
+          path: '/good_morning',
+          builder: (context, state) {
+            return GoodMorningScreen();
+          },
+        ),
+        GoRoute(
+          path: '/history',
+          builder: (context, state) {
+            return HistoryScreen();
+          },
+        ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) {
+            return ProfileScreen();
           },
           routes: [
             GoRoute(
-              path: 'good_morning',
+              path: 'edit',
               builder: (context, state) {
-                return GoodMorningScreen();
+                return EditProfileScreen();
               },
-            ),
-            GoRoute(
-              path: 'history',
-              builder: (context, state) {
-                return HistoryScreen();
-              },
-            ),
-            GoRoute(
-              path: 'profile',
-              builder: (context, state) {
-                return ProfileScreen();
-              },
-              routes: [
-                GoRoute(
-                  path: 'edit',
-                  builder: (context, state) {
-                    return EditProfileScreen();
-                  },
-                ),
-              ],
             ),
           ],
         ),
-        GoRoute(
-          path: 'login',
-          builder: (context, state) {
-            return LoginScreen();
-          },
-        ),
-        GoRoute(
-          path: '/chat/:roomId',
-          builder: (context, state) {
-            final roomId = state.pathParameters['roomId']!;
-            return ChatRoomScreen(id: roomId);
-          },
-        ),
       ],
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) {
+        return LoginScreen();
+      },
+    ),
+    GoRoute(
+      path: '/chat/:roomId',
+      builder: (context, state) {
+        final roomId = state.pathParameters['roomId']!;
+        return ChatRoomScreen(id: roomId);
+      },
     ),
   ],
   errorBuilder: (context, state) {
