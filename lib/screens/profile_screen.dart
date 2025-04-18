@@ -32,18 +32,20 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              user.bio ?? 'A mantra goes here',
+              user.bio ?? 'Life goes on',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (var emoji in ['👍', '❤️', '🥰', '😆', '😮'])
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Text(emoji, style: const TextStyle(fontSize: 24)),
-                  ),
+                IconButton(
+                  onPressed: () {
+                    // TODO: Handle thumbs up logic
+                  },
+                  icon: const Text('👍', style: TextStyle(fontSize: 24)),
+                ),
+                const Text('0', style: TextStyle(fontSize: 18)),
               ],
             ),
             ElevatedButton(

@@ -1,9 +1,8 @@
 // lib/screens/chat_room_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_earth_globe/globe_coordinates.dart';
-import 'package:flutter_earth_globe/point_connection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:good_morning/models/chat_room.dart';
+import 'package:go_router/go_router.dart';
+import 'package:good_morning/layout/default_layout.dart';
 import 'package:good_morning/models/message.dart';
 import 'package:good_morning/providers/chat_rooms_provider.dart';
 
@@ -38,29 +37,22 @@ class _ChatRoomScreenState extends ConsumerState<ChatRoomScreen> {
   Widget build(BuildContext context) {
     final room = ref
         .watch(chatRoomsProvider)
-        .firstWhere(
-          (room) => room.id == widget.id,
-          orElse:
-              () => ChatRoom(
-                id: widget.id,
-                title: '채팅방',
-                participants: [],
-                connection: PointConnection(
-                  id: 'default_connection',
-                  label: '기본 연결',
-                  start: GlobeCoordinates(0.0, 0.0),
-                  end: GlobeCoordinates(0.0, 0.0),
-                ),
-                createdAt: DateTime.now(),
-              ),
-        );
+        .firstWhere((room) => room.id == widget.id);
     print('메시지 수: ${room.messages.length}');
 
     final messages = room.messages;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(room.title)),
-      body: Column(
+    return DefaultLayout(
+      appBar: AppBar(
+        title: Text(room.title),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/good_morning');
+          },
+        ),
+      ),
+      child: Column(
         children: [
           Expanded(
             child: ListView.builder(

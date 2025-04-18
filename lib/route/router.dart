@@ -14,8 +14,9 @@ final router = GoRouter(
   redirect: (context, state) async {
     if (FirebaseAuth.instance.currentUser != null) {
       User? user = FirebaseAuth.instance.currentUser;
-      String? idToken = await user?.getIdToken(true);
-      print(idToken);
+      // String? idToken = await user?.getIdToken(true);
+      // print(idToken);
+      print(user?.uid);
       return null; // 라우팅 경로로 이동
     }
     return '/login';
