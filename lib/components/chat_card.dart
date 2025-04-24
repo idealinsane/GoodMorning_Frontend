@@ -1,3 +1,4 @@
+import 'package:good_morning/views/join_chat_room_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:good_morning/models/chat_room.dart';
@@ -37,7 +38,14 @@ class ChatRoomCard extends StatelessWidget {
           ],
         ),
         onTap: () {
-          context.go('/chat/${room.id}');
+          if (room.participants.length == 1) {
+            showDialog(
+              context: context,
+              builder: (_) => Dialog(child: JoinChatRoomView(room: room)),
+            );
+          } else {
+            context.go('/chat/${room.id}');
+          }
         },
       ),
     );

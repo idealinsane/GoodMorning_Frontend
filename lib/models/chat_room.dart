@@ -18,4 +18,22 @@ class ChatRoom {
     required this.createdAt,
     this.messages = const [],
   });
+
+  ChatRoom copyWith({
+    String? id,
+    String? title,
+    List<UserProfile>? participants,
+    PointConnection? connection,
+    DateTime? createdAt,
+    List<Message>? messages,
+  }) {
+    return ChatRoom(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      participants: participants ?? this.participants,
+      connection: connection ?? this.connection,
+      createdAt: createdAt ?? this.createdAt,
+      messages: messages ?? this.messages,
+    );
+  }
 }

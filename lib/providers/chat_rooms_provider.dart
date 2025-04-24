@@ -1,29 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:good_morning/data/room_dummy.dart';
 import 'package:good_morning/models/chat_room.dart';
 import 'package:good_morning/models/message.dart';
 
 class ChatRoomsNotifier extends StateNotifier<List<ChatRoom>> {
-  ChatRoomsNotifier() : super([]);
+  ChatRoomsNotifier() : super(dummyChatRooms);
 
   void appendMessage(String roomId, Message message) {
     state = [
       for (final room in state)
         if (room.id == roomId)
-          ChatRoom(
-            id: room.id,
-            title: room.title,
-            participants: room.participants,
-            connection: room.connection,
-            createdAt: room.createdAt,
-            messages: [...room.messages, message],
-          )
+          room.copyWith(messages: [...room.messages, message])
         else
           room,
     ];
   }
 
   void addRoom(ChatRoom room) {
-    state = [...state, room];
+    if (!state.any((r) => r.id == room.id)) {
+      state = [...state, room];
+    }
   }
 }
 

@@ -5,12 +5,14 @@ class UserProfile {
   final String nickname;
   final String? bio;
   final String? profileImageUrl;
+  int likes;
 
   UserProfile({
     required this.uid,
     required this.nickname,
     this.bio,
     this.profileImageUrl,
+    this.likes = 0,
   });
 
   // Factory constructor to create a UserProfile from a map
@@ -18,8 +20,9 @@ class UserProfile {
     return UserProfile(
       uid: data['uid'] as String,
       nickname: data['nickname'] as String,
-      bio: data['bio'] as String,
+      bio: data['bio'] as String?,
       profileImageUrl: data['profileImageUrl'] as String?,
+      likes: data['likes'] as int? ?? 0,
     );
   }
 
@@ -30,6 +33,7 @@ class UserProfile {
       'nickname': nickname,
       'bio': bio,
       'profileImageUrl': profileImageUrl,
+      'likes': likes,
     };
   }
 
@@ -44,6 +48,6 @@ class UserProfile {
   }
   @override
   String toString() {
-    return 'UserProfile{uid: $uid, nickname: $nickname, bio: $bio, profileImageUrl: $profileImageUrl}';
+    return 'UserProfile{uid: $uid, nickname: $nickname, bio: $bio, profileImageUrl: $profileImageUrl, likes: $likes}';
   }
 }

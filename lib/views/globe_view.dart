@@ -5,6 +5,7 @@ import 'package:flutter_earth_globe/point.dart';
 import 'package:flutter_earth_globe/point_connection.dart';
 import 'package:go_router/go_router.dart';
 import 'package:good_morning/models/chat_room.dart';
+import 'package:good_morning/views/join_chat_room_view.dart';
 
 class GlobeView extends StatefulWidget {
   final List<ChatRoom> rooms;
@@ -29,7 +30,15 @@ class _GlobeViewState extends State<GlobeView>
     final label = GestureDetector(
       onTap: () {
         print('Label tapped: $text');
-        context.go('/chat/$id');
+        final room = widget.rooms.firstWhere((r) => r.id == id);
+        if (room.participants.length == 1) {
+          showDialog(
+            context: context,
+            builder: (_) => Dialog(child: JoinChatRoomView(room: room)),
+          );
+        } else {
+          context.go('/chat/${room.id}');
+        }
       },
       child: Container(
         decoration: BoxDecoration(
