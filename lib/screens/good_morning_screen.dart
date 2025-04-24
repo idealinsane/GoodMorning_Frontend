@@ -1,43 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_earth_globe/flutter_earth_globe.dart';
-import 'package:flutter_earth_globe/flutter_earth_globe_controller.dart';
-import 'package:good_morning/layout/default_layout.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:good_morning/constants/showGlobe.dart';
+import 'package:good_morning/data/room_dummy.dart';
+import 'package:good_morning/views/chat_room_list_view.dart';
+import 'package:good_morning/views/globe_view.dart';
 
-class GoodMorningScreen extends StatefulWidget {
+class GoodMorningScreen extends ConsumerStatefulWidget {
   const GoodMorningScreen({super.key});
 
   @override
-  State<GoodMorningScreen> createState() => _GoodMorningScreenState();
+  ConsumerState<GoodMorningScreen> createState() => _GoodMorningScreenState();
 }
 
-class _GoodMorningScreenState extends State<GoodMorningScreen> {
-  late FlutterEarthGlobeController _controller;
-
+class _GoodMorningScreenState extends ConsumerState<GoodMorningScreen> {
   @override
-  initState() {
+  void initState() {
     super.initState();
-    _controller = FlutterEarthGlobeController(
-      rotationSpeed: 0.25,
-      isBackgroundFollowingSphereRotation: true,
-      surface: Image.asset('assets/images/2k_earth-day.jpg').image,
-      background: Image.asset('assets/images/2k_stars.jpg').image,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // You may want to handle room addition logic here
+      // final notifier = ref.read(chatRoomsProvider.notifier);
+      // for (final room in dummyChatRooms) {
+      //   notifier.addRoom(room);
+      // }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('Good Morning'),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: FlutterEarthGlobe(controller: _controller, radius: 90),
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: Center(
+            child:
+                showGlobe
+                    ? SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: GlobeView(rooms: dummyChatRooms),
+                    )
+                    : ChatRoomListView(rooms: dummyChatRooms),
           ),
-        ],
-      ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 50),
+            child: Switch(
+              value: showGlobe,
+              onChanged: (value) {
+                setState(() {
+                  showGlobe = value;
+                });
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

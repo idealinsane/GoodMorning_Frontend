@@ -31,12 +31,24 @@ class LoginScreen extends StatelessWidget {
       context.go('/good_morning');
     }
     return DefaultLayout(
-      child: Center(
+      child: SizedBox.expand(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Good Morning'),
+            // 좀 더 크고 선명한 글씨체로 변경
+            Text(
+              'Good Morning',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 80),
+            // logo 삽입
+            Image.asset('assets/images/logo.png', width: 200),
+            SizedBox(height: 80),
 
             InkWell(
               onTap: () async {
