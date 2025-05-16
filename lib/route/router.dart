@@ -10,16 +10,20 @@ import 'package:good_morning/screens/login_screen.dart';
 import 'package:good_morning/screens/profile_screen.dart';
 
 final router = GoRouter(
-  initialLocation: '/good_morning',
-  redirect: (context, state) async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      User? user = FirebaseAuth.instance.currentUser;
-      // String? idToken = await user?.getIdToken(true);
-      // print(idToken);
-      print(user?.uid);
-      return null; // 라우팅 경로로 이동
+  initialLocation: '/login',
+  redirect: (context, state) {
+    final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+    final isLoginRoute = state.matchedLocation == '/login';
+
+    if (!isLoggedIn && !isLoginRoute) {
+      return '/login';
     }
-    return '/login';
+
+    if (isLoggedIn && isLoginRoute) {
+      return '/good_morning';
+    }
+
+    return null;
   },
   routes: [
     ShellRoute(

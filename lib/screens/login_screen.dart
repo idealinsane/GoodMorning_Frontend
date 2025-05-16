@@ -1,42 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:good_morning/layout/default_layout.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:good_morning/services/login_service.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null) {
-      context.go('/good_morning');
-    }
     return DefaultLayout(
       child: SizedBox.expand(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 좀 더 크고 선명한 글씨체로 변경
             Text(
               'Good Morning',
               style: TextStyle(
@@ -46,15 +23,22 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 80),
-            // logo 삽입
             Image.asset('assets/images/logo.png', width: 200),
             SizedBox(height: 80),
-
             InkWell(
               onTap: () async {
-                UserCredential userCredential = await signInWithGoogle();
-                print(userCredential.user);
-                context.go('/good_morning');
+                try {
+                  await LoginService.signInWithGoogle();
+                  context.go('/good_morning');
+                } catch (e) {
+                  print('로그인 실패: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('로그인에 실패했습니다: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
               child: Image.asset('assets/images/google_login.png', width: 300),
             ),
