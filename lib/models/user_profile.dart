@@ -15,21 +15,21 @@ class UserProfile {
     this.likes = 0,
   });
 
-  // Factory constructor to create a UserProfile from a map
-  factory UserProfile.fromMap(Map<String, dynamic> data) {
+  // Factory constructor to create a UserProfile from JSON
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      uid: data['uid'] as String,
-      nickname: data['nickname'] as String,
-      bio: data['bio'] as String?,
+      uid: json['uid'] as String,
+      nickname: json['nickname'] as String,
+      bio: json['bio'] as String?,
       profileImageUrl:
-          data['profileImageUrl'] as String? ??
-          data['profile_picture'] as String?,
-      likes: data['likes'] as int? ?? 0,
+          json['profileImageUrl'] as String? ??
+          json['profile_picture'] as String?,
+      likes: json['likes'] as int? ?? 0,
     );
   }
 
-  // Method to convert a UserProfile to a map
-  Map<String, dynamic> toMap() {
+  // Method to convert a UserProfile to JSON
+  Map<String, dynamic> toJson() {
     return {
       'uid': uid,
       'nickname': nickname,

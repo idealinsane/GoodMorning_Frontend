@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -56,7 +54,7 @@ class LoginService {
 
   static Future<http.Response> logout() async {
     final response = await http.post(
-      Uri.parse('http://localhost:9090/auth/logout'),
+      Uri.parse('http://goodmorningkr01.duckdns.org/auth/logout'),
       headers: getAuthHeaders(),
     );
 
@@ -88,9 +86,9 @@ class LoginService {
     // firebase auth token을 우리 서버로 보내서 200 응답 받기
     // 로컬 서버 Ip 아이폰 용: 192.168.0.100
     // path: /login
-    print("login 테스트 시작");
+
     final response = await http.post(
-      Uri.parse('http://localhost:9090/api/auth/sync'),
+      Uri.parse('http://goodmorningkr01.duckdns.org/api/auth/sync'),
       headers: getAuthHeaders(),
     );
 
@@ -98,7 +96,8 @@ class LoginService {
       // toast 띄우기
       Fluttertoast.showToast(msg: '로그인 성공');
     } else {
-      Fluttertoast.showToast(msg: '로그인 실패');
+      Fluttertoast.showToast(msg: '로그인 실패 ${response.statusCode}');
+      print(response.body);
     }
 
     // Once signed in, return the UserCredential

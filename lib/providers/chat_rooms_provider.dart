@@ -7,9 +7,15 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter_earth_globe/point_connection.dart';
 import 'package:flutter_earth_globe/globe_coordinates.dart';
 import 'package:good_morning/data/room_dummy.dart';
+import 'package:good_morning/services/chat_service.dart';
 
 class ChatRoomsNotifier extends StateNotifier<List<ChatRoom>> {
-  ChatRoomsNotifier() : super(dummyChatRooms);
+  final ChatService _chatService;
+
+  ChatRoomsNotifier(this._chatService) : super([]) {
+    // 초기화 시 채팅방 목록 로드
+    refreshRooms();
+  }
 
   // 채팅방 생성
   Future<ChatRoom> createRoom({
@@ -137,18 +143,14 @@ class ChatRoomsNotifier extends StateNotifier<List<ChatRoom>> {
 
   // 채팅방 목록 새로고침
   Future<void> refreshRooms() async {
-    // TODO: 서버에서 채팅방 목록 가져오기
-    // final response = await http.get(
-    //   Uri.parse('https://api.goodmorning.com/chatrooms'),
-    // );
-
-    // if (response.statusCode != 200) {
-    //   throw Exception('채팅방 목록을 가져오는데 실패했습니다: ${response.body}');
-    // }
-
-    // final List<dynamic> roomsJson = jsonDecode(response.body);
-    // final rooms = roomsJson.map((json) => ChatRoom.fromJson(json)).toList();
-    // state = rooms;
+    try {
+      final rooms = await _chatService.getChatRooms();
+      state = rooms;
+    } catch (e) {
+      print('채팅방 목록 새로고침 실패: $e');
+      // 에러 발생 시 기존 상태 유지
+      rethrow;
+    }
   }
 
   // 채팅방 나가기
@@ -185,7 +187,14 @@ class ChatRoomsNotifier extends StateNotifier<List<ChatRoom>> {
   }
 }
 
+// ChatService provider 추가
+final chatServiceProvider = Provider<ChatService>((ref) {
+  return ChatService();
+});
+
+// ChatRoomsNotifier provider 수정
 final chatRoomsProvider =
     StateNotifierProvider<ChatRoomsNotifier, List<ChatRoom>>((ref) {
-      return ChatRoomsNotifier();
+      final chatService = ref.watch(chatServiceProvider);
+      return ChatRoomsNotifier(chatService);
     });

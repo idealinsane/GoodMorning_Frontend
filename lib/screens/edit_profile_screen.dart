@@ -14,16 +14,15 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nicknameController;
-  late TextEditingController _bioController;
+  late final TextEditingController _nicknameController =
+      TextEditingController();
+  late final TextEditingController _bioController = TextEditingController();
+  UserProfile? _userProfile;
 
   @override
   void initState() {
     super.initState();
-    final user = FirebaseAuth.instance.currentUser!;
-    final profile = UserProfile.fromFirebaseUser(user);
-    _nicknameController = TextEditingController(text: profile.nickname);
-    _bioController = TextEditingController(text: profile.bio ?? '');
+    _loadProfile();
   }
 
   @override
@@ -37,12 +36,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     try {
-      // final user = FirebaseAuth.instance.currentUser!;
-
-      // 닉네임 업데이트
-      // await user.updateDisplayName(_nicknameController.text);
-
-      // bio 업데이트
       await UserService.updateProfile(
         nickname: _nicknameController.text,
         bio: _bioController.text,
@@ -64,6 +57,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
       }
     }
+  }
+
+  Future<void> _loadProfile() async {
+    _userProfile = await UserService.getCurrentUserProfile();
+    if (!mounted) return;
+    setState(() {
+      _nicknameController.text = _userProfile?.nickname ?? '';
+      _bioController.text = _userProfile?.bio ?? '';
+    });
   }
 
   @override

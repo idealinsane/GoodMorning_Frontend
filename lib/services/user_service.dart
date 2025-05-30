@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:good_morning/models/user_profile.dart';
 
 class UserService {
-  static const String _baseUrl = 'http://localhost:9090/api/users';
+  static const String _baseUrl = 'http://goodmorningkr01.duckdns.org/api/users';
 
   /// 사용자 프로필을 조회합니다.
   ///
@@ -21,9 +21,7 @@ class UserService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return UserProfile.fromMap(data);
-    } else if (response.statusCode == 404) {
-      throw UserNotFoundException('사용자를 찾을 수 없습니다.');
+      return UserProfile.fromJson(data);
     } else {
       throw Exception('프로필 조회 실패: ${response.statusCode}');
     }
@@ -74,18 +72,11 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return UserProfile.fromMap(data);
+      final Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
+      return UserProfile.fromJson(data);
     } else {
       throw Exception('프로필 업데이트 실패: ${response.statusCode}');
     }
   }
-}
-
-class UserNotFoundException implements Exception {
-  final String message;
-  UserNotFoundException(this.message);
-
-  @override
-  String toString() => message;
 }
