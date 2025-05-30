@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Good Morning',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Pretendard',
       ),
       routerConfig: router,
     );

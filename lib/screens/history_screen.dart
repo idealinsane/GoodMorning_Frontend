@@ -11,6 +11,8 @@ import 'package:good_morning/models/location_model.dart';
 import 'package:flutter_earth_globe/globe_coordinates.dart';
 import 'package:flutter_earth_globe/point_connection.dart';
 import 'package:good_morning/models/message.dart';
+import 'package:good_morning/screens/chat_history_detail_screen.dart';
+import 'package:good_morning/services/user_service.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -45,16 +47,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     await Future.delayed(const Duration(milliseconds: 500));
 
-    final now = DateTime.now();
+    // 내 프로필 불러오기
+    final me = await UserService.getCurrentUserProfile();
 
-    // 더미 유저
-    final user1 = UserProfile(
-      uid: 'u1',
-      nickname: '홍길동',
-      bio: 'Flutter 개발자',
-      profileImageUrl: null,
-      likes: 10,
-    );
+    // 다른 더미 유저
     final user2 = UserProfile(
       uid: 'u2',
       nickname: '김철수',
@@ -74,7 +70,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ChatRoom(
         id: '1',
         title: 'Flutter Study',
-        participants: [user1, user2],
+        participants: [me, user2],
         connection: PointConnection(
           id: 'c1',
           start: GlobeCoordinates(37.5665, 126.9780), // 서울
@@ -86,20 +82,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
             id: 'm1',
             content: '안녕하세요!',
             timestamp: may25,
-            senderId: 'u1',
+            senderId: me.uid,
           ),
           Message(
             id: 'm2',
             content: '오늘 스터디 몇 시에 시작해요?',
             timestamp: may26,
-            senderId: 'u2',
+            senderId: user2.uid,
           ),
         ],
       ),
       ChatRoom(
         id: '2',
         title: '친구들',
-        participants: [user1],
+        participants: [me],
         connection: PointConnection(
           id: 'c2',
           start: GlobeCoordinates(37.5665, 126.9780),
@@ -111,14 +107,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             id: 'm3',
             content: '주말에 뭐해?',
             timestamp: june1,
-            senderId: 'u1',
+            senderId: me.uid,
           ),
         ],
       ),
       ChatRoom(
         id: '3',
         title: '회사',
-        participants: [user2],
+        participants: [user2, me],
         connection: PointConnection(
           id: 'c3',
           start: GlobeCoordinates(35.1796, 129.0756),
@@ -130,13 +126,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
             id: 'm4',
             content: '회의 자료 준비됐나요?',
             timestamp: june10,
-            senderId: 'u2',
+            senderId: user2.uid,
           ),
           Message(
             id: 'm5',
             content: '네, 준비 완료입니다!',
             timestamp: june13,
-            senderId: 'u2',
+            senderId: me.uid,
           ),
         ],
       ),
@@ -367,9 +363,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           child: ListTile(
             onTap: () {
-              final now = DateTime.now();
-              final isReadOnly = now.difference(room.createdAt).inHours >= 24;
-              context.push('/chat/${room.id}', extra: {'readOnly': isReadOnly});
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => ChatHistoryDetailScreen(room: room),
+                ),
+              );
             },
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
