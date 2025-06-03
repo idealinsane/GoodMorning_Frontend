@@ -55,7 +55,7 @@ GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들
     ![JIRA 협업](docs/images/jira-collaboration.png)
 
 *   **Swagger API**: API 문서를 명확하게 정의하고 공유하여 프론트엔드와 백엔드 간의 원활한 의사소통을 지원합니다.  
-([Swagger API 문서](https://app.swaggerhub.com/apis-docs/MINSUKIM/goodmorning-api/25.05.02))
+[Swagger API 문서](https://app.swaggerhub.com/apis-docs/MINSUKIM/goodmorning-api/25.05.02) (Ctrl+클릭 또는 Cmd+클릭으로 새 창에서 열기)
 
 ## 🚀 시작하기
 
@@ -100,4 +100,4 @@ cp env-template .env
 
 ## 🐛 이슈 리포트
 
-버그 리포트나 기능 제안은 [GitHub Issues](https://github.com/idealinsane/GoodMorning/issues)를 이용해주세요.
+버그 리포트나 기능 제안은 [GitHub Issues](https://github.com/idealinsane/GoodMorning/issues)를 이용해주세요. (Ctrl+클릭 또는 Cmd+클릭으로 새 창에서 열기)
