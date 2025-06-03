@@ -1,10 +1,9 @@
 # ☀️ 굿모닝 프로젝트
+GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들에게 짧고 가벼운 사회적 연결을 제공하는 것을 목표로 합니다.
 
 ## 📖 프로젝트 개요
 
-GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들에게 짧고 가벼운 사회적 연결을 제공하는 것을 목표로 합니다.
-
-미국의 신경과학자 앤드류 휴버만(Andrew Huberman)의 연구에 따르면, 아침에 단순히 "굿모닝"이라는 인사를 주고받는 것만으로도 강하게 연결된 공동체의 일부라는 느낌을 받을 수 있다고 합니다. 이는 우리의 뇌가 사회적 연결을 통해 안정감과 소속감을 얻는 진화적 특성을 가지고 있기 때문입니다.
+미국의 신경과학자 앤드류 후버만(Andrew Huberman)의 연구에 따르면, 아침에 단순히 "굿모닝"이라는 인사를 주고받는 것만으로도 강하게 연결된 공동체의 일부라는 느낌을 받을 수 있다고 합니다. 이는 우리의 뇌가 사회적 연결을 통해 안정감과 소속감을 얻는 진화적 특성을 가지고 있기 때문입니다.
 
 [![관련 영상](https://img.youtube.com/vi/glWp9mnVDEk/0.jpg)](https://www.youtube.com/shorts/glWp9mnVDEk)
 
@@ -43,9 +42,9 @@ GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들
 ## 👥 팀 소개 및 기여
 
 * 김민수 - 서비스 기획, 모바일 앱 개발 (Flutter), UI 디자인
-* 구찬서 - 서비스 기획
+* 구찬서 - 서비스 기획, 모바일 앱 개발 (Flutter)
 * 홍창현 - 서비스 기획, 서버 개발 (Fast API)
-* 정현규 - 프론트 백엔드 연동
+* 정현규 - 서버 개발 (Fast API), 프론트 백엔드 연동
 
 ## 🤝 협업
 
@@ -55,7 +54,8 @@ GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들
 
     ![JIRA 협업](docs/images/jira-collaboration.png)
 
-*   **Swagger API**: API 문서를 명확하게 정의하고 공유하여 프론트엔드와 백엔드 간의 원활한 의사소통을 지원합니다. ([Swagger API 문서](https://app.swaggerhub.com/apis/MINSUKIM/goodmorning-api/25.05.02))
+*   **Swagger API**: API 문서를 명확하게 정의하고 공유하여 프론트엔드와 백엔드 간의 원활한 의사소통을 지원합니다.  
+([Swagger API 문서](https://app.swaggerhub.com/apis-docs/MINSUKIM/goodmorning-api/25.05.02))
 
 ## 🚀 시작하기
 
