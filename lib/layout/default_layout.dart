@@ -9,6 +9,6 @@ class DefaultLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: child), appBar: appBar);
+    return Scaffold(body: SafeArea(top: false, child: child), appBar: appBar);
   }
 }

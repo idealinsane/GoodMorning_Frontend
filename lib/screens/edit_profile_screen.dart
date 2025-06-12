@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:good_morning/models/user_profile.dart';
 import 'dart:ui';
 import 'package:good_morning/services/user_service.dart';
+import 'dart:async';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -19,14 +20,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late final TextEditingController _bioController = TextEditingController();
   UserProfile? _userProfile;
 
+  static const Duration _gradientDuration = Duration(milliseconds: 1800);
+  static const Duration _gradientInterval = Duration(milliseconds: 1800);
+  final List<List<Color>> _gradientColors = [
+    [
+      Color(0xFF235390),
+      Color(0xFF4F8DFD),
+      Color(0xFFA7C7E7),
+      Color(0xFFE3F0FF),
+    ],
+    [
+      Color(0xFF4F8DFD),
+      Color(0xFF235390),
+      Color(0xFFE3F0FF),
+      Color(0xFFA7C7E7),
+    ],
+    [
+      Color(0xFFA7C7E7),
+      Color(0xFFE3F0FF),
+      Color(0xFF235390),
+      Color(0xFF4F8DFD),
+    ],
+  ];
+  int _gradientIndex = 0;
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
+    _timer = Timer.periodic(_gradientInterval, (timer) {
+      setState(() {
+        _gradientIndex = (_gradientIndex + 1) % _gradientColors.length;
+      });
+    });
     _loadProfile();
   }
 
   @override
   void dispose() {
+    _timer.cancel();
     _nicknameController.dispose();
     _bioController.dispose();
     super.dispose();
@@ -70,88 +102,96 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.blue.shade400, Colors.blue.shade200],
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: const Text(
-            '프로필 수정',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-            onPressed: () => context.pop(),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.4),
-                          width: 1.5,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          _buildGlassTextField(
-                            controller: _nicknameController,
-                            label: '닉네임',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '닉네임을 입력해주세요';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          _buildGlassTextField(
-                            controller: _bioController,
-                            label: '소개',
-                            maxLines: 3,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                _buildGlassButton(
-                  onPressed: _saveProfile,
-                  child: const Text(
-                    '저장하기',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+    return Stack(
+      children: [
+        AnimatedContainer(
+          duration: _gradientDuration,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: _gradientColors[_gradientIndex],
             ),
           ),
         ),
-      ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text(
+              '프로필 수정',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+              onPressed: () => context.pop(),
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.4),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildGlassTextField(
+                              controller: _nicknameController,
+                              label: '닉네임',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '닉네임을 입력해주세요';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            _buildGlassTextField(
+                              controller: _bioController,
+                              label: '소개',
+                              maxLines: 3,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildGlassButton(
+                    onPressed: _saveProfile,
+                    child: const Text(
+                      '저장하기',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

@@ -124,16 +124,21 @@ class _GlobeViewState extends State<GlobeView>
         FlutterEarthGlobe(controller: controller, radius: 70),
         Align(
           alignment: Alignment.topCenter,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              image: DecorationImage(
-                image: Image.asset('assets/images/GM_text.png').image,
-                fit: BoxFit.fitWidth,
+          child: Column(
+            children: [
+              SizedBox(height: 80),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  image: DecorationImage(
+                    image: Image.asset('assets/images/GM_text.png').image,
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],

@@ -24,6 +24,7 @@ class ChatRoomListView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 0),
       children: [
+        SizedBox(height: 50),
         if (participatingRooms.isNotEmpty) ...[
           _SectionTitle('Participating'),
           const SizedBox(height: 8),

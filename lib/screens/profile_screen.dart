@@ -8,6 +8,7 @@ import 'package:good_morning/services/login_service.dart';
 import 'package:good_morning/services/user_service.dart';
 import 'package:good_morning/services/chat_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'dart:async';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -23,12 +24,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _chatRoomCount = 0;
   int _messageCount = 0;
 
+  // Gradient 애니메이션 관련 변수 추가 (login_screen.dart에서 복사)
+  static const Duration _gradientDuration = Duration(milliseconds: 1800);
+  static const Duration _gradientInterval = Duration(milliseconds: 1800);
+  final List<List<Color>> _gradientColors = [
+    [
+      Color(0xFF235390),
+      Color(0xFF4F8DFD),
+      Color(0xFFA7C7E7),
+      Color(0xFFE3F0FF),
+    ],
+    [
+      Color(0xFF4F8DFD),
+      Color(0xFF235390),
+      Color(0xFFE3F0FF),
+      Color(0xFFA7C7E7),
+    ],
+    [
+      Color(0xFFA7C7E7),
+      Color(0xFFE3F0FF),
+      Color(0xFF235390),
+      Color(0xFF4F8DFD),
+    ],
+  ];
+  int _gradientIndex = 0;
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
+    // Gradient 애니메이션 타이머 세팅
+    _timer = Timer.periodic(_gradientInterval, (timer) {
+      setState(() {
+        _gradientIndex = (_gradientIndex + 1) % _gradientColors.length;
+      });
+    });
     _loadProfile();
     _loadAppVersion();
     _loadStats();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<void> _loadAppVersion() async {
@@ -88,18 +127,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return const Center(child: Text('프로필을 불러올 수 없습니다'));
     }
 
-    return SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.blue.shade400, Colors.blue.shade200],
+    return Scaffold(
+      body: Stack(
+        children: [
+          // AnimatedContainer: 배경 그라데이션
+          AnimatedContainer(
+            duration: _gradientDuration,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: _gradientColors[_gradientIndex],
+              ),
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            Column(
+          // 내용 전체를 SingleChildScrollView로 감싼다
+          SingleChildScrollView(
+            child: Column(
               children: [
                 Container(
                   height: 200,
@@ -114,14 +158,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 80),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.all(20),
+                // Glassmorphism 카드와 프로필 이미지를 Stack으로 겹치게 배치
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    // Glassmorphism 카드 (상단 패딩/마진 더 크게)
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 60,
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                      ),
+                      padding: const EdgeInsets.only(
+                        top: 100,
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(20),
@@ -159,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          // 활동 통계
+                          // Activity Stats
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -171,17 +225,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 _buildStatItem(
                                   icon: Icons.chat_bubble_outline,
-                                  label: '채팅방',
+                                  label: 'Chats',
                                   value: _chatRoomCount.toString(),
                                 ),
                                 _buildStatItem(
                                   icon: Icons.message_outlined,
-                                  label: '메시지',
+                                  label: 'Messages',
                                   value: _messageCount.toString(),
                                 ),
                                 _buildStatItem(
                                   icon: Icons.favorite_border,
-                                  label: '좋아요',
+                                  label: 'Likes',
                                   value: _userProfile!.likes.toString(),
                                 ),
                               ],
@@ -189,27 +243,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 24),
 
-                          // 설정 메뉴
+                          // Settings
                           _buildMenuSection(
-                            title: '설정',
+                            title: 'Settings',
                             items: [
                               _buildMenuItem(
                                 icon: Icons.notifications_outlined,
-                                label: '알림 설정',
+                                label: 'Notification Settings',
                                 onTap: () {
                                   // TODO: 알림 설정 화면으로 이동
                                 },
                               ),
                               _buildMenuItem(
                                 icon: Icons.dark_mode_outlined,
-                                label: '테마 설정',
+                                label: 'Theme Settings',
                                 onTap: () {
                                   // TODO: 테마 설정 화면으로 이동
                                 },
                               ),
                               _buildMenuItem(
                                 icon: Icons.language_outlined,
-                                label: '언어 설정',
+                                label: 'Language Settings',
                                 onTap: () {
                                   // TODO: 언어 설정 화면으로 이동
                                 },
@@ -218,20 +272,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          // 계정 관리
+                          // Account Management
                           _buildMenuSection(
-                            title: '계정 관리',
+                            title: 'Account Management',
                             items: [
                               _buildMenuItem(
                                 icon: Icons.security_outlined,
-                                label: '비밀번호 변경',
+                                label: 'Change Password',
                                 onTap: () {
                                   // TODO: 비밀번호 변경 화면으로 이동
                                 },
                               ),
                               _buildMenuItem(
                                 icon: Icons.delete_outline,
-                                label: '계정 삭제',
+                                label: 'Delete Account',
                                 onTap: () {
                                   _showDeleteAccountDialog();
                                 },
@@ -240,13 +294,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          // 앱 정보
+                          // App Info
                           _buildMenuSection(
-                            title: '앱 정보',
+                            title: 'App Info',
                             items: [
                               _buildMenuItem(
                                 icon: Icons.info_outline,
-                                label: '버전',
+                                label: 'Version',
                                 trailing: Text(
                                   _appVersion,
                                   style: TextStyle(
@@ -256,21 +310,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               _buildMenuItem(
                                 icon: Icons.description_outlined,
-                                label: '이용약관',
+                                label: 'Terms of Service',
                                 onTap: () {
                                   // TODO: 이용약관 화면으로 이동
                                 },
                               ),
                               _buildMenuItem(
                                 icon: Icons.privacy_tip_outlined,
-                                label: '개인정보 처리방침',
+                                label: 'Privacy Policy',
                                 onTap: () {
                                   // TODO: 개인정보 처리방침 화면으로 이동
                                 },
                               ),
                               _buildMenuItem(
                                 icon: Icons.help_outline,
-                                label: '문의하기',
+                                label: 'Contact Us',
                                 onTap: () {
                                   // TODO: 문의하기 화면으로 이동
                                 },
@@ -279,93 +333,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 24),
 
-                          // 로그아웃 버튼
+                          // Logout Button
                           _buildGlassButton(
-                            onPressed: () {
-                              FirebaseAuth.instance.signOut();
-                              LoginService.clearToken();
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              await LoginService.clearToken();
                               context.go('/login');
                             },
                             child: const Text(
-                              '로그아웃',
+                              'Logout',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              top: 140,
-              left: MediaQuery.of(context).size.width / 2 - 60,
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 20,
-                      spreadRadius: 5,
+                    // 프로필 이미지 (카드 위에 겹치게)
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 20,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.white.withOpacity(0.15),
+                        child: CircleAvatar(
+                          radius: 56,
+                          backgroundImage:
+                              _userProfile?.profileImageUrl != null
+                                  ? NetworkImage(_userProfile!.profileImageUrl!)
+                                  : null,
+                          child:
+                              _userProfile?.profileImageUrl == null
+                                  ? const Icon(
+                                    Icons.person,
+                                    size: 56,
+                                    color: Colors.white,
+                                  )
+                                  : null,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.white.withOpacity(0.15),
-                  child: CircleAvatar(
-                    radius: 56,
-                    backgroundImage:
-                        _userProfile?.profileImageUrl != null
-                            ? NetworkImage(_userProfile!.profileImageUrl!)
-                            : null,
-                    child:
-                        _userProfile?.profileImageUrl == null
-                            ? const Icon(
-                              Icons.person,
-                              size: 56,
-                              color: Colors.white,
-                            )
-                            : null,
+              ],
+            ),
+          ),
+          // FAB(프로필 편집 버튼)는 계속 Stack의 Positioned로 남겨둔다
+          Positioned(
+            bottom: 24,
+            right: 24,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.4),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: FloatingActionButton(
+                    onPressed: () async {
+                      // 프로필 편집 화면으로 이동하고 결과 대기
+                      await context.push('/profile/edit');
+                      // 편집 화면에서 돌아오면 프로필 갱신
+                      _loadProfile();
+                    },
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    child: const Icon(Icons.edit, color: Colors.white),
                   ),
                 ),
               ),
             ),
-            Positioned(
-              bottom: 24,
-              right: 24,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.4),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: FloatingActionButton(
-                      onPressed: () async {
-                        // 프로필 편집 화면으로 이동하고 결과 대기
-                        await context.push('/profile/edit');
-                        // 편집 화면에서 돌아오면 프로필 갱신
-                        _loadProfile();
-                      },
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      child: const Icon(Icons.edit, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -501,17 +553,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('계정 삭제'),
-            content: const Text('정말로 계정을 삭제하시겠습니까?\n삭제된 계정은 복구할 수 없습니다.'),
+            title: const Text('Delete Account'),
+            content: const Text(
+              'Are you sure you want to delete your account?\nDeleted accounts cannot be recovered.',
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('취소'),
+                child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
                 style: TextButton.styleFrom(foregroundColor: Colors.red),
-                child: const Text('삭제'),
+                child: const Text('Delete'),
               ),
             ],
           ),
@@ -528,7 +582,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('계정 삭제 실패: $e'),
+              content: Text('Failed to delete account: $e'),
               backgroundColor: Colors.red,
             ),
           );

@@ -69,7 +69,7 @@ class _GoodMorningScreenState extends ConsumerState<GoodMorningScreen> {
             child:
                 showGlobe
                     ? SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.8,
+                      height: MediaQuery.of(context).size.height,
                       child: GlobeView(rooms: rooms),
                     )
                     : ChatRoomListView(rooms: rooms),

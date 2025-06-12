@@ -7,7 +7,7 @@ class NavigationLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: child),
+      body: SafeArea(top: false, child: child),
       bottomNavigationBar: BottomNavigationBarGM(),
     );
   }
