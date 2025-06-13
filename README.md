@@ -16,7 +16,7 @@ GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들
 
 ## 🎥 시연 영상
 
-[![GoodMorning 데모](https://img.youtube.com/vi/BFB20TLINnk/0.jpg)](https://youtube.com/shorts/BFB20TLINnk?feature=share)
+[GoodMorning 데모 영상 보러가기](https://youtube.com/shorts/BFB20TLINnk?feature=share)
 
 ## ✨ 주요 기능
 
