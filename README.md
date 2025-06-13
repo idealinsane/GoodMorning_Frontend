@@ -61,14 +61,14 @@ GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들
 
 아래 순서를 따라 프로젝트 환경을 구성하세요.
 
-### 1️⃣ 프로젝트 클론
+### 1️. 프로젝트 클론
 
 ```bash
 git clone https://github.com/idealinsane/GoodMorning.git
 cd GoodMorning/
 ```
 
-### 2️⃣ Firebase 설정
+### 2️. Firebase 설정
 
 #### 2-1. Firebase 로그인
 
@@ -87,7 +87,7 @@ flutterfire configure --project=goodmorning-e2072
 ```
 
 
-### 3️⃣ .env 파일 생성
+### 3️. env 파일 생성
 
 프로젝트 루트 디렉토리에 `.env` 파일을 생성합니다.
 
@@ -98,6 +98,20 @@ cp env-template .env
 `.env` 파일에 필요한 키 값을 입력하세요.
 
 
-## 🐛 이슈 리포트
+## 굿모닝 프로젝트 작업 디렉토리
+
+````
+GoodMorning_Frontend/
+├── lib/              # 앱의 주요 소스 코드 (UI, 로직 등)
+├── assets/           # 이미지, 폰트 등 정적 리소스
+├── android/          # 안드로이드 플랫폼 설정 및 네이티브 연동
+├── ios/              # iOS 플랫폼 설정 및 네이티브 연동
+├── doc/              # 프로젝트 문서 (선택적 사용)
+├── pubspec.yaml      # 의존성 및 assets 설정
+└── README.md         # 프로젝트 소개 문서
+````
+
+
+##  이슈 리포트
 
 버그 리포트나 기능 제안은 [GitHub Issues](https://github.com/idealinsane/GoodMorning/issues)를 이용해주세요. (Ctrl+클릭 또는 Cmd+클릭으로 새 창에서 열기)
