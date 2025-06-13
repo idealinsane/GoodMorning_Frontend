@@ -112,7 +112,7 @@ class _JoinChatRoomViewState extends State<JoinChatRoomView> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 28,
-                            vertical: 216,
+                            vertical: 144,
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -180,7 +180,7 @@ class _JoinChatRoomViewState extends State<JoinChatRoomView> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 18),
+                              const SizedBox(height: 128),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
