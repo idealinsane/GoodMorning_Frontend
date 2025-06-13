@@ -41,10 +41,10 @@ GoodMorning 프로젝트는 현대 사회에서 고립감을 느끼는 사람들
 
 ## 👥 팀 소개 및 기여
 
-* 김민수 - 서비스 기획, 모바일 앱 개발 (Flutter), UI 디자인
-* 구찬서 - 서비스 기획, 모바일 앱 개발 (Flutter)
-* 홍창현 - 서비스 기획, 서버 개발 (Fast API)
-* 정현규 - 서버 개발 (Fast API), 프론트 백엔드 연동
+* [김민수](https://github.com/idealinsane) (`idealinsane`) - 서비스 기획, 모바일 앱 개발 (Flutter), UI 디자인
+* [구찬서](https://github.com/Koo-CS) (`Koo-CS`) - 서비스 기획, 모바일 앱 개발 (Flutter)
+* [홍창현](https://github.com/pob124) (`pob124`) - 서비스 기획, 서버 개발 (Fast API)
+* [정현규](https://github.com/oscar2272) (`oscar2272`) - 서버 개발 (Fast API), 프론트 백엔드 연동
 
 ## 🤝 협업
 
